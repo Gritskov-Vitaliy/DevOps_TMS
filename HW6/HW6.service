@@ -1,0 +1,8 @@
+[Unit]
+Description=HW6
+
+[Service]
+ExecStart=/home/tms/DevOps_TMS/HW6/task1.sh
+
+[Install]
+WantedBy=multi-user.target
