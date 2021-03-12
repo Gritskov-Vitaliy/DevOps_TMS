@@ -9,8 +9,13 @@ app="myownapp.com"
 ssh_config="/etc/ssh/sshd_config"
 pass_auth_yes="PasswordAuthentication yes"
 pass_auth_no="PasswordAuthentication no"
+pass_auth=$(sudo sed -i -- "s/$pass_auth_yes/$pass_auth_no/g" $ssh_config)
+#pass_auth=$(sudo sed -i -- "s/$pass_auth_no/$pass_auth_yes/g" $ssh_config)
 root_login_yes="PermitRootLogin yes"
 root_login_no="PermitRootLogin no"
+root_login=$(sudo sed -i -- "s/$root_login_yes/$root_login_no/g" $ssh_config)
+#root_login=$(sudo sed -i -- "s/$root_login_no/$root_login_yes/g" $ssh_config)
+packages="mc vim git"
 DNS_file="/etc/resolv.conf"
 DNS1="8.8.8.8"
 DNS2="1.1.1.1"
@@ -33,15 +38,15 @@ function add_app {
 }
 
 function edit_ssh_config {
-    sudo sed -i -- "s/$pass_auth_yes/$pass_auth_no/g" $ssh_config
-    sudo sed -i -- "s/$root_login_yes/$root_login_no/g" $ssh_config
+    $pass_auth
+    $root_login
     sudo systemctl reload sshd
     echo "Сhanged the configuration of the ssh connection"
 }
 
 function install_packages {
-    sudo yum install -y mc vim git
-    echo "Install mc, vim and git packages"
+    sudo yum install -y $packages
+    echo "Install $packages packages"
 }
 
 function update_DNS {
