@@ -29,3 +29,5 @@ Tasks:
 For point 3 and 4 script should request input data until you type exit(e) instead of any number.
 
 ![Task1_2](Task1_2.PNG)
+
+![Task3](Task3.PNG)
