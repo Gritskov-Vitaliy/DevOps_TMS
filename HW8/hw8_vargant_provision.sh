@@ -73,4 +73,12 @@ function dir {
     sudo chown -R $user:$user $directory
 }
 
-add_user; copy_ssh; add_app; edit_ssh_config; install_packages; update_DNS; check_app; white_ip; dir
+add_user
+copy_ssh
+add_app
+edit_ssh_config
+install_packages
+update_DNS
+check_app
+white_ip
+dir
