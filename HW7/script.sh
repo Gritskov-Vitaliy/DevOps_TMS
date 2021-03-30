@@ -57,5 +57,4 @@ case $option in
     4) lower;;
     5) arr;;
     -h |h | -help | help) help;;
-
 esac
