@@ -4,6 +4,7 @@ log_file="/var/log/HW6_task2.log"
 hosts="/etc/hosts"
 app="myapp.com"
 Delete_File_Dir="DELETE_ME"
+Date=$(date +"%d-%m-%Y %H:%M:%S")
 
 function dir_sort {
     log "Проведена сортировка директорий."
@@ -19,22 +20,27 @@ tput setaf 7
 function file_sort {
     log "Проведена сортировка файлов."
     tput setaf 2
-    find $HOME -maxdepth 1 -type f -ctime +3 | xargs ls -la | awk '{print $9, $6, $7}'
+    f_sort=find $HOME -maxdepth 1 -type f -ctime +3 | xargs ls -la | awk '{print $9, $6, $7}'
+    echo $f_sort
     tput setaf 7
 }
 
 function monitor {
     log "Мониторинг системы."
     tput setaf 3
-    echo PIDS: "`top -bn1 | grep Tasks | awk '{printf $2}'`"
+    PIDS="`top -bn1 | grep Tasks | awk '{printf $2}'`"
+    echo "PIDS: $PIDS"
     tput setaf 4
-    echo CPU: "`uptime | awk '{print $8, $9, $10}'`"
+    CPU="`uptime | awk '{print $8, $9, $10}'`"
+    echo "CPU: $CPU"
 	tput setaf 7
     echo '     total free'
     tput setaf 5
-    free -hm | grep Mem | awk '{print $1, $2, $4}'
+    MEM=`free -hm | grep Mem | awk '{print $1, $2, $4}'`
+    echo $MEM
 	tput setaf 2
-    echo HDD: `df -h | awk '{if ($6 == "/") { print $2, $4 }}' | head -1`
+    HDD=`df -h | awk '{if ($6 == "/") { print $2, $4 }}' | head -1`
+    echo "HDD: $HDD"
     tput setaf 7
 }
 
@@ -94,17 +100,16 @@ function del_me {
             echo "Обнаружен $Delete_File_Dir. Сделана запись в $log_file:"
             if [[ -d $Delete_File_Dir ]]
                 then
-                echo "$(date +"%d-%m-%Y %H:%M:%S"): Обнаружена директория $Delete_File_Dir, в директории создан файл temp, в файл temp внесена информация о времени создания файла" >> $log_file
+                echo "$Date: Обнаружена директория $Delete_File_Dir, в директории создан файл temp, в файл temp внесена информация о времени создания файла" >> $log_file
                 date >> $Delete_File_Dir/temp
                 else
-                echo "$(date +"%d-%m-%Y %H:%M:%S"): Обнаружен файл $Delete_File_Dir, в файл внесена информация о времени создания" >> $log_file
+                echo "$Date: Обнаружен файл $Delete_File_Dir, в файл внесена информация о времени создания" >> $log_file
                 date >> $Delete_File_Dir
             fi 
 }
 
 function log {
     action=$1
-    Date=$(date +"%d-%m-%Y %H:%M:%S")
     Pid=$(ps aux | awk '{if ($12 == "./task2.sh"){print $2}}')
     user=$(ps aux | awk '{if ($12 == "./task2.sh"){print $1}}')
     Log="$Date: $action Номер процесса: $Pid, Пользователь: $user"
