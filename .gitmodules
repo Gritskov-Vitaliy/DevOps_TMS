@@ -1,0 +1,3 @@
+[submodule "Test_repo"]
+	path = Test_repo
+	url = https://github.com/Gritskov-Vitaliy/Test_repo.git
