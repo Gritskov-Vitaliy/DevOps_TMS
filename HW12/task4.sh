@@ -23,8 +23,8 @@ read C
 if [[ $C == "exit" ]] || [[ $C == "e" ]]; then
     tput setaf 1; echo "Exit"; tput setaf 7 
     exit
-elif [ -z $A ] || [ -z $B ] || [ -z $C ]; then
-    tput setaf 2; echo "The value A, B or C is empty"; tput setaf 7 
+elif [ -z $A ] || [ -z $B ] || [ -z $C ] || [[ ! $A == ?(-)+([0-9]) ]] || [[ ! $B == ?(-)+([0-9]) ]] || [[ ! $C == ?(-)+([0-9]) ]]; then
+    tput setaf 2; echo "The value of A, B, or C is empty or is not a number"; tput setaf 7 
 elif (( $A == $B )); then
     if (( $B == $C )); then
         tput setaf 2; echo "A = B = C"; tput setaf 7
