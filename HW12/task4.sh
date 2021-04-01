@@ -41,8 +41,10 @@ elif (( $A > $B )); then
     elif (( $B < $C )); then
         if (( $A == $C )); then
             tput setaf 2; echo "B < A = C"; tput setaf 7
-        else
-            tput setaf 2; echo "A > B < C"; tput setaf 7
+        elif (( $A > $C )); then
+            tput setaf 2; echo "B < C < A"; tput setaf 7
+        elif (( $A > $B )); then
+            tput setaf 2; echo "B < A < C"; tput setaf 7
         fi
     fi
 elif (( $A < $B )); then
@@ -51,8 +53,10 @@ elif (( $A < $B )); then
     elif (( $B > $C )); then
         if (( $A == $C )); then
             tput setaf 2; echo "B > A = C"; tput setaf 7
-        else
-            tput setaf 2; echo "A < B > C"; tput setaf 7
+        elif (( $A < $C )); then
+            tput setaf 2; echo "A < C < B"; tput setaf 7
+        elif (( $A < $B )); then
+            tput setaf 2; echo "B > A > C"; tput setaf 7
         fi
     elif (( $B < $C )); then
         tput setaf 2; echo "A < B < C"; tput setaf 7
