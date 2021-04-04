@@ -11,7 +11,7 @@
       "Resource": [
         "arn:aws:s3:::test1",
         "arn:aws:s3:::backup-test*"
- "arn:aws:s3:::hw12-bucket"
+        "arn:aws:s3:::hw12-bucket"
       ],
       "Principal": "*"
     }
