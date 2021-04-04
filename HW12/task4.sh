@@ -23,8 +23,8 @@ read C
 if [[ $C == "exit" ]] || [[ $C == "e" ]]; then
     tput setaf 1; echo "Exit"; tput setaf 7 
     exit
-elif [ -z $A ] || [ -z $B ] || [ -z $C ]; then
-    tput setaf 2; echo "The value A, B or C is empty"; tput setaf 7 
+elif [ -z $A ] || [ -z $B ] || [ -z $C ] || [[ ! $A == ?(-)+([0-9]) ]] || [[ ! $B == ?(-)+([0-9]) ]] || [[ ! $C == ?(-)+([0-9]) ]]; then
+    tput setaf 2; echo "The value of A, B, or C is empty or is not a number"; tput setaf 7 
 elif (( $A == $B )); then
     if (( $B == $C )); then
         tput setaf 2; echo "A = B = C"; tput setaf 7
@@ -41,8 +41,10 @@ elif (( $A > $B )); then
     elif (( $B < $C )); then
         if (( $A == $C )); then
             tput setaf 2; echo "B < A = C"; tput setaf 7
-        else
-            tput setaf 2; echo "A > B < C"; tput setaf 7
+        elif (( $A > $C )); then
+            tput setaf 2; echo "B < C < A"; tput setaf 7
+        elif (( $A > $B )); then
+            tput setaf 2; echo "B < A < C"; tput setaf 7
         fi
     fi
 elif (( $A < $B )); then
@@ -51,8 +53,10 @@ elif (( $A < $B )); then
     elif (( $B > $C )); then
         if (( $A == $C )); then
             tput setaf 2; echo "B > A = C"; tput setaf 7
-        else
-            tput setaf 2; echo "A < B > C"; tput setaf 7
+        elif (( $A < $C )); then
+            tput setaf 2; echo "A < C < B"; tput setaf 7
+        elif (( $A < $B )); then
+            tput setaf 2; echo "B > A > C"; tput setaf 7
         fi
     elif (( $B < $C )); then
         tput setaf 2; echo "A < B < C"; tput setaf 7
