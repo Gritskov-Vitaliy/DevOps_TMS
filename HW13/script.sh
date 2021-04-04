@@ -25,18 +25,16 @@ if [[ $C == "exit" ]] || [[ $C == "e" ]]; then
     exit
 fi
 
+A=$(echo $A | awk '{print tolower($0)}')
+B=$(echo $B | awk '{print tolower($0)}')
+C=$(echo $C | awk '{print tolower($0)}')
+
 declare -i zero=0
 declare -i one=1
 declare -i two=2
 declare -i three=3
 declare -i four=4
 declare -i five=5
-declare -i Zero=0
-declare -i One=1
-declare -i Two=2
-declare -i Three=3
-declare -i Four=4
-declare -i Five=5
 
 if [ -z $A ] || [ -z $B ] || [ -z $C ]; then
     tput setaf 2; echo "The value of A, B, or C is empty"; tput setaf 7 
