@@ -54,80 +54,46 @@ function compare {
     fi
 }
 
-function check_C {
-    if [ -z $C ]; then
-        tput setaf 2; echo "The value of C is empty"; tput setaf 7
-    elif [[ ! $C == ?(-)+([0-9]) ]]; then
-        if [[ ! " ${array[@]} " =~ " $C " ]]; then
-            tput setaf 2; echo "The text value of C is out of range or unknown value"; tput setaf 7
-        else
-            compare
-        fi
-    else
-        compare
-    fi
-}
-
-function enter_C {
-    tput setaf 4; echo "Enter the number C"; tput setaf 7 
-    read C
-    if [[ $C == "exit" ]] || [[ $C == "e" ]]; then
+function check {
+    num=$1
+    if [[ $num == "exit" ]] || [[ $num == "e" ]]; then
         tput setaf 1; echo "Exit"; tput setaf 7 
         exit
+    elif [ -z $num ]; then
+        tput setaf 2; echo "The value is empty"; tput setaf 7
+        trigger=1
+        return $trigger
+    elif [[ ! $num == ?(-)+([0-9]) ]] && [[ ! " ${array[@]} " =~ " $num " ]]; then        
+        tput setaf 2; echo "The text value is out of range (zero..five) or unknown value"; tput setaf 7
+        trigger=1
+        return $trigger
     else
-        C=$(echo $C | awk '{print tolower($0)}')
-        check_C
-    fi
-}
-
-function enter_B {
-    tput setaf 4; echo "Enter the number B"; tput setaf 7 
-    read B
-    if [[ $B == "exit" ]] || [[ $B == "e" ]]; then
-        tput setaf 1; echo "Exit"; tput setaf 7 
-        exit
-    else
-        B=$(echo $B | awk '{print tolower($0)}')
-        check_B
-    fi
-}
-
-function check_B {
-    if [ -z $B ]; then
-        tput setaf 2; echo "The value of B is empty"; tput setaf 7
-    elif [[ ! $B == ?(-)+([0-9]) ]]; then
-        if [[ ! " ${array[@]} " =~ " $B " ]]; then
-            tput setaf 2; echo "The text value of B is out of range or unknown value"; tput setaf 7
-        else
-            enter_C
-        fi
-    else
-        enter_C
-    fi
-}
-
-function check_A {
-    if [ -z $A ]; then
-        tput setaf 2; echo "The value of A is empty"; tput setaf 7
-    elif [[ ! $A == ?(-)+([0-9]) ]]; then
-        if [[ ! " ${array[@]} " =~ " $A " ]]; then
-            tput setaf 2; echo "The text value of A is out of range or unknown value"; tput setaf 7
-        else
-            enter_B
-        fi
-    else
-        enter_B
+        trigger=0
+        return $trigger
     fi
 }
 
 tput setaf 4; echo "Enter the number A"; tput setaf 7 
 read A
-if [[ $A == "exit" ]] || [[ $A == "e" ]]; then
-    tput setaf 1; echo "Exit"; tput setaf 7 
-    exit
+A=$(echo $A | awk '{print tolower($0)}')
+check "$A"
+if [[ $trigger == "1" ]]; then
+    continue
 else
-    A=$(echo $A | awk '{print tolower($0)}')
-    check_A
+    tput setaf 4; echo "Enter the number B"; tput setaf 7 
+    read B
+    B=$(echo $B | awk '{print tolower($0)}')
+    check "$B"
+fi
+
+if [[ $trigger == "1" ]]; then
+    continue
+else
+    tput setaf 4; echo "Enter the number C"; tput setaf 7 
+    read C
+    C=$(echo $C | awk '{print tolower($0)}')
+    check "$C"
+    compare
 fi
 
 done
