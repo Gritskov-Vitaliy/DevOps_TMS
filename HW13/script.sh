@@ -93,7 +93,12 @@ else
     read C
     C=$(echo $C | awk '{print tolower($0)}')
     check "$C"
-    compare
+    
 fi
 
+if [[ $trigger == "1" ]]; then
+    continue
+else
+    compare
+fi
 done
