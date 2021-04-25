@@ -4,33 +4,13 @@ A=$1
 B=$2
 C=$3
 
-function A_compare_B {
-    if (( $A == $B )); then
-        echo "A = B"
-    elif (( $A > $B )); then
-        echo "A > B"
-    elif (( $A < $B )); then
-        echo "A < B"
-    fi
-}
-
-function B_compare_C {
-    if (( $B == $C )); then
-        echo "B = C"
-    elif (( $B > $C )); then
-        echo "B > C"
-    elif (( $B < $C )); then
-        echo "B < C"
-    fi
-}
-
-function A_compare_C {
-    if (( $A == $C )); then
-        echo "A = C"
-    elif (( $A > $C )); then
-        echo "A > C"
-    elif (( $A < $C )); then
-        echo "A < C"
+function compare {
+    if (( $1 == $2 )); then
+        echo "$1 = $2"
+    elif (( $1 > $2 )); then
+        echo "$1 > $2"
+    elif (( $1 < $2 )); then
+        echo "$1 < $2"
     fi
 }
 
@@ -39,8 +19,8 @@ if [ -z $A ] || [ -z $B ] || [ -z $C ] || [[ ! $A == ?(-)+([0-9]) ]] || [[ ! $B 
     exit
 fi
 
-AB=$(A_compare_B)
-BC=$(B_compare_C)
-AC=$(A_compare_C)
+AB=$(compare $A $B)
+BC=$(compare $B $C)
+AC=$(compare $A $C)
 
 echo "$AB, $BC, $AC"
