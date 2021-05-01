@@ -1,0 +1,3 @@
+group_hw20: ZONE_2
+group: sudo
+copy_file: curl_7.68.0-1ubuntu2.5_amd64.deb

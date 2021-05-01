@@ -1,0 +1,13 @@
+- name: Copy file
+  become: true
+  ansible.builtin.copy:
+    src: "{{  copy_file  }}"
+    dest: "{{  copy_dest  }}"
+
+- name: Add permissions
+  become: true
+  ansible.builtin.file:
+    path: "{{  copy_dest  }}"
+    owner: "{{  user  }}"
+    mode: '0755'
+  tags: permissions

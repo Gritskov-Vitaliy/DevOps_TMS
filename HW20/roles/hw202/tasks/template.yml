@@ -1,0 +1,5 @@
+- name: Template file
+  become: true
+  ansible.builtin.template:
+    src:  "{{ template_src }}"
+    dest: "{{ template_dest }}"

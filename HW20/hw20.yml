@@ -1,0 +1,4 @@
+- hosts: Linux
+  roles:
+    - hw201
+    - hw202

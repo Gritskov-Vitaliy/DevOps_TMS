@@ -1,0 +1,12 @@
+- name: Install a .deb package
+  become: true
+  apt:
+    deb: tmp/curl_7.68.0-1ubuntu2.5_amd64.deb
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Install a .rpm package
+  become: true
+  yum:
+    name: tmp/curl-7.61.1-14.el8_3.1.x86_64.rpm
+    state: present
+  when: ansible_facts['os_family'] == "RedHat"
