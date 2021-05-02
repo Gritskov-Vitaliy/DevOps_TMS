@@ -1,0 +1,13 @@
+all:
+ children:
+  Group1:
+   hosts:
+    192.168.33.10:
+  Group2:
+   hosts:
+    192.168.33.11:
+  Group3:
+   hosts:
+    192.168.33.12:
+ vars:
+  ansible_user: vagrant
