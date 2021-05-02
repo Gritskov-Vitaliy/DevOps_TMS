@@ -1,0 +1,20 @@
+version: "3.8"
+services: 
+    container1:
+        build: .
+        deploy:
+            resources:
+                limits:
+                  cpus: 1
+                  memory: 1024M
+        command: /bin/sh -c "go version && python3 --version"
+        dns: 1.1.1.1
+    container2:
+        image: "${Image_tag}:latest"
+        deploy:
+            resources:
+                limits:
+                  cpus: 1
+                  memory: 1024M
+        command: /bin/sh -c "go version && python3 --version"
+        dns: 2.2.2.2
