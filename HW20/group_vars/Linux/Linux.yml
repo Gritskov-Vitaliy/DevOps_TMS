@@ -6,10 +6,16 @@ packages:
   - docker-ce
   - docker-ce-cli
   - containerd.io
-user: hw20
-shell: /bin/sh
-home_dir: /opt/"{{  user  }}"
+users:
+  - name: hw20
+    shell: /bin/sh
+    home_dir: /opt/hw20
 repo: https://github.com/Gritskov-Vitaliy/Test_repo.git
-template_src: zone.j2
-template_dest: tmp/HW20_FILE_INFO
-copy_dest: tmp/
+template:
+  - src: zone.j2
+    dest: tmp/HW20_FILE_INFO
+git_repo: tmp/git_repo
+permission:
+  - owner: "{{  users.name  }}"
+    path: "{{  copy.dest  }}"
+    mode: 0755

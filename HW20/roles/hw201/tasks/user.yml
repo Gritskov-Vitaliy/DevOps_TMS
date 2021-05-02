@@ -1,13 +1,15 @@
 - name: Add user
   become: true
   ansible.builtin.user:
-    name: "{{  user  }}"
-    home: "{{  home_dir  }}"
-    shell: "{{  shell  }}"
+    name: "{{  item.name  }}"
+    home: "{{  item.home_dir  }}"
+    shell: "{{  item.shell  }}"
+  loop: "{{  users  }}"
     
 - name: Add root
   become: true
   ansible.builtin.user:
-    name: "{{  user  }}"
-    groups: "{{  group  }}"
+    name: "{{  item.name  }}"
+    groups: "{{  sudo_group  }}"
+  loop: "{{  users  }}"
   tags: root

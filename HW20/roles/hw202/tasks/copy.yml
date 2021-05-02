@@ -1,13 +1,15 @@
 - name: Copy file
   become: true
   ansible.builtin.copy:
-    src: "{{  copy_file  }}"
-    dest: "{{  copy_dest  }}"
+    src: "{{  item.file  }}"
+    dest: "{{  item.dest  }}"
+  loop: "{{  copy  }}"
 
 - name: Add permissions
   become: true
   ansible.builtin.file:
-    path: "{{  copy_dest  }}"
-    owner: "{{  user  }}"
-    mode: '0755'
+    path: "{{  item.0.dest  }}"
+    owner: "{{  item.1.name  }}"
+    mode: "{{ item.0.mode  }}"
+  loop: "{{  copy|zip(users)|list  }}"
   tags: permissions
