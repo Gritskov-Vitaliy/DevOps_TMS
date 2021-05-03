@@ -1,0 +1,6 @@
+group_hw20: ZONE_1
+sudo_group: wheel
+copy:
+  - file: curl-7.61.1-14.el8_3.1.x86_64.rpm
+    dest: tmp
+    mode: "0755"

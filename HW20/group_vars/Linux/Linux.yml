@@ -1,0 +1,21 @@
+ansible_user: vagrant
+ansible_ssh_private_key_file: ~/.ssh/id_rsa
+packages: 
+  - git
+  - python3
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+users:
+  - name: hw20
+    shell: /bin/sh
+    home_dir: /opt/hw20
+repo: https://github.com/Gritskov-Vitaliy/Test_repo.git
+template:
+  - src: zone.j2
+    dest: tmp/HW20_FILE_INFO
+git_repo: tmp/git_repo
+permission:
+  - owner: "{{  users.name  }}"
+    path: "{{  copy.dest  }}"
+    mode: 0755

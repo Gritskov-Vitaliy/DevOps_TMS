@@ -1,0 +1,6 @@
+group_hw20: ZONE_2
+sudo_group: sudo
+copy:
+  - file: curl_7.68.0-1ubuntu2.5_amd64.deb
+    dest: tmp
+    mode: "0755"
