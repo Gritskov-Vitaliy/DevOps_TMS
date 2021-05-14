@@ -4,3 +4,6 @@ copy:
   - file: curl-7.61.1-14.el8_3.1.x86_64.rpm
     dest: tmp
     mode: "0755"
+packages: 
+ - { name: "git", version: "2.27.0-1.el8" }
+ - { name: "python36", version: "3.6.8-2.module_el8.3.0+562+e162826a" }

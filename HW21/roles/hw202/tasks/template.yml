@@ -1,6 +1,8 @@
-- name: Template file
+- name: Create template files
   become: true
   ansible.builtin.template:
     src:  "{{ item.src }}"
     dest: "{{ item.dest }}"
+    owner: "{{  item.owner  }}"
+    mode: "{{ item.mode }}"
   loop: "{{  template  }}"

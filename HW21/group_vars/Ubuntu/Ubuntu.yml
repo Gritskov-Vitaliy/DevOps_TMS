@@ -4,3 +4,6 @@ copy:
   - file: curl_7.68.0-1ubuntu2.5_amd64.deb
     dest: tmp
     mode: "0755"
+packages: 
+ - { name: "git", version: "1:2.25.1-1ubuntu3.1" }
+ - { name: "python3", version: "3.8.2-0ubuntu2" }

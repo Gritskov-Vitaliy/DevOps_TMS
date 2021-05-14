@@ -6,3 +6,6 @@
 
 - name: Use template
   import_tasks: template.yml
+
+- name: Start systemd
+  import_tasks: systemd.yml
