@@ -1,0 +1,8 @@
+- name: Copy files
+  import_tasks: copy.yml
+
+- name: Install packages
+  import_tasks: install.yml
+
+- name: Use template
+  import_tasks: template.yml

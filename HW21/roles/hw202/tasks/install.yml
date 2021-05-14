@@ -1,0 +1,14 @@
+- name: Install a .deb package
+  become: true
+  ansible.builtin.apt:
+    deb: "tmp/{{  item.file  }}"
+  loop: "{{  copy  }}"  
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Install a .rpm package
+  become: true
+  ansible.builtin.yum:
+    name: "tmp/{{  item.file  }}"
+    state: present
+  loop: "{{  copy  }}"
+  when: ansible_facts['os_family'] == "RedHat"

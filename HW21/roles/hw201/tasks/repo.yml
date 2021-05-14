@@ -1,0 +1,6 @@
+- name: Clone git repositories
+  become: true
+  ansible.builtin.git:
+    repo: "{{  repo  }}"
+    dest: "{{  git_repo  }}"
+    clone: yes
