@@ -1,0 +1,12 @@
+[Unit]
+Description=Logger
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart={{  ExecStart  }}
+Restart=always
+RestartSec=30s
+
+[Install]
+WantedBy=multi-user.target
