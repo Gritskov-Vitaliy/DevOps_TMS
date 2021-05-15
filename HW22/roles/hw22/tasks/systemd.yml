@@ -1,0 +1,17 @@
+- name: Create log file
+  ansible.builtin.file:
+    path: "{{  logfile  }}"
+    state: touch
+    mode: 777
+
+- name: Reload systemd
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Start systemd
+  become: true
+  ansible.builtin.systemd:
+    name: logger
+    state: started
+    enabled: yes
