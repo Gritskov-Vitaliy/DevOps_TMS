@@ -1,5 +1,8 @@
-- name: Use template
-  import_tasks: template.yml
+- name: Create users
+  import_tasks: users.yml
 
-- name: Start systemd
-  import_tasks: systemd.yml
+- name: Start log service
+  import_tasks: log_service.yml
+
+- name: Create host ip file and localy hosts list
+  import_tasks: hosts_file.yml

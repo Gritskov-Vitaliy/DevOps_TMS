@@ -1,0 +1,7 @@
+/tmp/log_service.log {
+  rotate {{ log_service.rotate }}
+  {{ log_service.period }}
+  missingok
+  notifempty
+  {{ log_service.compress }}
+}

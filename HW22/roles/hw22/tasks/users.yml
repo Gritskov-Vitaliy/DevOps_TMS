@@ -1,0 +1,20 @@
+- name: Create password
+  ansible.builtin.set_fact:
+    user_pass: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
+
+- name: Show password
+  ansible.builtin.debug:
+    msg: "Users password: {{  user_pass  }}"
+
+- name: Add users
+  ansible.builtin.user:
+   name: "{{ item.name }}"
+   shell: "{{ item.shell }}"
+   home: "{{ item.home_dir }}"
+   groups: "{{ item.groups }}"
+   password: "{{ user_pass }}"
+   state: present
+  loop: "{{ users }}"
+  no_log: true
+  become: true
+
