@@ -1,5 +1,6 @@
 ansible_user: vagrant
 ansible_ssh_private_key_file: ~/.ssh/id_rsa
+user_add_method: loop #with or loop
 users:
   - { name: hw21_1, shell: /bin/sh, home_dir: /opt/hw21_1, groups: ""}
   - { name: hw21_2, shell: /bin/sh, home_dir: /opt/hw21_2, groups: ""}
@@ -12,7 +13,7 @@ log_service:
   period: weekly
   rotate: 5
   compress: compress
-  logfile_locate: "~/log_ip.txt"
+  logfile_locate: "~/log_service.txt"
   logfile_permission: "0755"
 local_hostslist:
   name: "hosts_list.txt"
