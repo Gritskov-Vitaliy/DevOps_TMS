@@ -1,0 +1,74 @@
+- name: Add Docker on Centos
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/
+  become: true
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Add Docker on Ubuntu
+  block:
+    - name: Add Docker GPG key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add Docker repo
+      ansible.builtin.apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+  become: true
+  when: ansible_facts['os_family'] == "Debian" 
+
+- name: Install packages
+  ansible.builtin.package:
+    name: "{{  item  }}"
+    state: present
+  become: true
+  loop: "{{  packages  }}"
+
+- name: Start and enable the Docker daemon and nginx
+  ansible.builtin.service:
+    name: "{{  item  }}"
+    state: started
+    enabled: yes
+  become: true
+  loop:
+    - docker
+    - nginx
+
+- name: Var rc=0
+  ansible.builtin.set_fact:
+    rc: "0"
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Var rc=2
+  ansible.builtin.set_fact:
+    rc: "2"
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: "{{  Name_task_test_var  }}"
+  ansible.builtin.debug:
+    msg: "{{  Name_task_test_var  }}: rc={{ rc }} "
+  when: rc != "0"
+
+- name: Check nginx configs
+  ansible.builtin.shell: "/usr/sbin/nginx -t"
+  become: true
+  register: nginx_config_status
+
+- name: Test nginx status
+  ansible.builtin.debug:
+    msg: "{{ nginx_config_status.stderr }}"
+  when: nginx_config_status.rc != 0
+  notify:
+    - Restart nginx
+
+- name: Last 20 lines nginx logs
+  ansible.builtin.shell: sudo tail -n 20 /var/log/nginx/error.log
+  become: true
+  register: log_nginx
+  when: nginx_config_status.rc != 0
+
+- name: Print nginx logs
+  debug:
+    msg: "{{ log_nginx.stdout_lines }}"
+  when: nginx_config_status.rc != 0

@@ -1,0 +1,22 @@
+- name: Create file
+  become: true
+  ansible.builtin.file:
+    path: "{{  file.name  }}"
+    state: touch
+    mode: "{{  file.mode  }}"
+  when: file.create == "yes"
+
+- name: Get stats of a file
+  ansible.builtin.stat:
+    path: "{{  file.name  }}"
+  register: file_stat
+
+- name: Debug message if the file does not exist
+  ansible.builtin.debug:
+    msg: "File {{  file.name  }} does not exist!"
+  when: not file_stat.stat.exists
+
+- name: Rename file
+  become: true
+  command: mv "{{  file.name  }}" "{{  file.newname  }}"
+  when: file_stat.stat.exists

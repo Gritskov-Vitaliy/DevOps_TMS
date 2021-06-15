@@ -1,0 +1,35 @@
+- name: Create link
+  become: true
+  ansible.builtin.file:
+    src: "{{  link.src  }}"
+    dest: "{{  link.name  }}"
+    state: link
+  when: link.create == "link"
+
+- name: Create file (use variables link)
+  become: true
+  ansible.builtin.file:
+    path: "{{  link.name  }}"
+    state: touch
+    mode: "{{  link.mode  }}"
+  when: link.create == "file"
+
+- name: Get stats of a link
+  ansible.builtin.stat:
+    path: "{{  link.name  }}"
+  register: link_stat
+
+- name: Debug message if the link does not exist
+  ansible.builtin.debug:
+    msg: "link {{  link.name  }} does not exist!"
+  when: not link_stat.stat.exists
+
+- name: Debug message if the link does not symlink
+  ansible.builtin.debug:
+    msg: "{{ link.name }} not a symlink"
+  when: link_stat.stat.exists and not link_stat.stat.islnk
+
+- name: Rename link
+  become: true
+  command: mv "{{  link.name  }}" "{{  link.newname  }}"
+  when: link_stat.stat.exists

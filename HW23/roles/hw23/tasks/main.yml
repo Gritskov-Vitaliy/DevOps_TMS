@@ -1,0 +1,12 @@
+- name: Create and rename file
+  import_tasks: file.yml
+
+- name: Create and rename link
+  import_tasks: link.yml
+
+- name: Install packages, test var and validation nginx service
+  import_tasks: hw23_1.yml
+
+- name: Create and print packages list and kernel
+  import_tasks: packages.yml
+  tags: optional
