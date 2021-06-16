@@ -1,0 +1,22 @@
+- name: Create template files for log service 
+  become: true
+  ansible.builtin.template:
+    src:  "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{  item.owner  }}"
+    mode: "{{ item.mode }}"
+  loop: "{{  log_service_template  }}"
+  notify: Reload systemd
+
+- name: Create log file
+  ansible.builtin.file:
+    path: "{{  log_service.logfile_locate  }}"
+    state: touch
+    mode: "{{  log_service.logfile_permission  }}"
+
+- name: Start log_service
+  become: true
+  ansible.builtin.systemd:
+    name: logger
+    state: started
+    enabled: yes

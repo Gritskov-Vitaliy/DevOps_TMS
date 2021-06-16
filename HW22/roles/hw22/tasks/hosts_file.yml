@@ -1,0 +1,23 @@
+- name: Find out host ip
+  ansible.builtin.set_fact: host_ip={{ ansible_ssh_host }}
+
+- name: Create locally hosts list and add date
+  ansible.builtin.lineinfile:
+    path: "{{  local_hostslist.name  }}"
+    line: "{{ ansible_date_time.date }} {{ ansible_date_time.hour }}:{{ ansible_date_time.minute }}"
+    mode: "{{  local_hostslist.mode  }}"
+    create: yes
+  delegate_to: localhost
+
+- name: Create host ip file locally
+  ansible.builtin.file:
+    path: "{{  host_ip  }}.txt"
+    state: touch
+    mode: 0755
+  delegate_to: localhost
+  notify: Add to locally hosts list host ip
+
+- name: Copy host ip file on remote
+  ansible.builtin.copy:
+    src: "{{  host_ip  }}.txt"
+    dest: "{{  hostipfile_dest  }}"

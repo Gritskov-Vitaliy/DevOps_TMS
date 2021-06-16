@@ -4,3 +4,11 @@
 4. Create a file hosts_list.txt on your local host which should contain date and hosts address playbook running on.
 5. Create files with {{hots_ip}}.txt for each your host. Add  task to copy file to remote host base on remote host IP.
 
+![screen1](Screen1.PNG)
+![screen2](Screen2.PNG)
+![screen3](Screen3.PNG)
+![screen4](Screen4.PNG)
+![S1_1](S1_1.PNG)
+![S1_2](S1_2.PNG)
+![S2_1](S2_1.PNG)
+![S2_2](S2_2.PNG)

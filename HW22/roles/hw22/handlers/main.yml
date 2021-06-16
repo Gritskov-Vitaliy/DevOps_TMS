@@ -1,0 +1,13 @@
+---
+- name: Reload systemd
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Add to locally hosts list host ip
+  ansible.builtin.lineinfile:
+    path: "{{  local_hostslist.name  }}"
+    line: "{{  host_ip  }}"
+    mode: "{{  local_hostslist.mode  }}"
+    create: yes
+  delegate_to: localhost

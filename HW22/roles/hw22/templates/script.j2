@@ -1,5 +1,5 @@
 #!/bin/bash
 Time=$(timedatectl | grep "Local")
 IP=$(hostname -I)
-echo "$Time" | sudo tee -a {{  logfile  }}
-echo "               IP: $IP" | sudo tee -a {{  logfile  }}
+echo "$Time" | sudo tee -a {{  log_service.logfile_locate  }}
+echo "               IP: $IP" | sudo tee -a {{  log_service.logfile_locate  }}
