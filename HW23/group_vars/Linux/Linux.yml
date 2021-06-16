@@ -1,0 +1,21 @@
+ansible_user: vagrant
+ansible_ssh_private_key_file: ~/.ssh/id_rsa
+file:
+  create: "" #yes or empty
+  name: "/opt/hw23_test_file"
+  mode: "0644"
+  newname: "/opt/hw23_test_file_exists"
+link:
+  create: "" #link or file or empty
+  name: "/opt/hw23_link"
+  src: "/etc/hosts"
+  mode: "0644"
+  newname: "/opt/hw23_test_file_link"
+packages: 
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - git
+  - python3
+  - nginx
+Name_task_test_var: "Test var"

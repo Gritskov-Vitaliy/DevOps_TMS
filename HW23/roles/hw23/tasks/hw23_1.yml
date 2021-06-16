@@ -1,0 +1,89 @@
+- name: Add Docker on Centos
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/
+  become: true
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Add Docker on Ubuntu
+  block:
+    - name: Add Docker GPG key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add Docker repo
+      ansible.builtin.apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+  become: true
+  when: ansible_facts['os_family'] == "Debian" 
+
+- name: Install packages
+  ansible.builtin.package:
+    name: "{{  item  }}"
+    state: present
+  become: true
+  loop: "{{  packages  }}"
+
+- name: Start and enable the Docker daemon and nginx
+  ansible.builtin.service:
+    name: "{{  item  }}"
+    state: started
+    enabled: yes
+  become: true
+  loop:
+    - docker
+    - nginx
+
+- name: Create fail script
+  become: true
+  ansible.builtin.blockinfile:
+    path: "/fail_script.sh"
+    create: yes
+    mode: "0755"
+    block: |
+      #!/bin/bash
+      exit $1
+
+- name: Get rc=0
+  ansible.builtin.shell: "/fail_script.sh 0"
+  become: true
+  register: test_rc
+  when: ansible_facts['os_family'] == "RedHat"
+  ignore_errors: true
+
+- name: Get rc=2
+  ansible.builtin.shell: "/fail_script.sh 2"
+  become: true
+  register: test_rc
+  when: ansible_facts['os_family'] == "Debian" 
+  ignore_errors: true
+
+- name: Print fail task
+  ansible.builtin.debug:
+    msg: "rc={{ test_rc.rc }} "
+  when: test_rc.rc != 0
+  ignore_errors: true
+
+- name: Check nginx configs
+  ansible.builtin.shell: "/usr/sbin/nginx -t"
+  become: true
+  register: nginx_config_status
+
+- name: Test nginx status
+  ansible.builtin.debug:
+    msg: "{{ nginx_config_status.stderr }}"
+  when: nginx_config_status.rc != 0
+  notify:
+    - Restart nginx
+
+- name: Last 20 lines nginx logs
+  ansible.builtin.shell: sudo tail -n 20 /var/log/nginx/error.log
+  become: true
+  register: log_nginx
+  when: nginx_config_status.rc != 0
+
+- name: Print nginx logs
+  ansible.builtin.debug:
+    msg: "{{ log_nginx.stdout_lines }}"
+  when: nginx_config_status.rc != 0

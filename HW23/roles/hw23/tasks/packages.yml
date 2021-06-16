@@ -1,0 +1,22 @@
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Create packages file
+  ansible.builtin.lineinfile:
+    path: packages_file.txt
+    line: "{{ item.key }} {{ item.value[0].version }}"
+    create: yes
+  loop: "{{ ansible_facts.packages|dict2items }}"
+
+- name: Open packages file
+  ansible.builtin.shell: "cat packages_file.txt"
+  register: packages_list
+
+- name: Print packages file
+  ansible.builtin.debug:
+    msg: "{{ packages_list.stdout_lines }}"
+
+- name: Print kernel
+  ansible.builtin.debug:
+    msg: "{{  ansible_kernel  }}"
