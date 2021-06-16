@@ -35,20 +35,35 @@
     - docker
     - nginx
 
-- name: Var rc=0
-  ansible.builtin.set_fact:
-    rc: "0"
+- name: Create fail script
+  become: true
+  ansible.builtin.blockinfile:
+    path: "/fail_script.sh"
+    create: yes
+    mode: "0755"
+    block: |
+      #!/bin/bash
+      exit $1
+
+- name: Get rc=0
+  ansible.builtin.shell: "/fail_script.sh 0"
+  become: true
+  register: test_rc
   when: ansible_facts['os_family'] == "RedHat"
+  ignore_errors: true
 
-- name: Var rc=2
-  ansible.builtin.set_fact:
-    rc: "2"
-  when: ansible_facts['os_family'] == "Debian"
+- name: Get rc=2
+  ansible.builtin.shell: "/fail_script.sh 2"
+  become: true
+  register: test_rc
+  when: ansible_facts['os_family'] == "Debian" 
+  ignore_errors: true
 
-- name: "{{  Name_task_test_var  }}"
+- name: Print fail task
   ansible.builtin.debug:
-    msg: "{{  Name_task_test_var  }}: rc={{ rc }} "
-  when: rc != "0"
+    msg: "rc={{ test_rc.rc }} "
+  when: test_rc.rc != 0
+  ignore_errors: true
 
 - name: Check nginx configs
   ansible.builtin.shell: "/usr/sbin/nginx -t"
@@ -69,6 +84,6 @@
   when: nginx_config_status.rc != 0
 
 - name: Print nginx logs
-  debug:
+  ansible.builtin.debug:
     msg: "{{ log_nginx.stdout_lines }}"
   when: nginx_config_status.rc != 0
